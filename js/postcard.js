@@ -45,10 +45,9 @@ Postcard.prototype.run = function() {
 
         }
 
-    }
+    };
 
     // view.onFrame = function(e) {
-
 
     // }
 };

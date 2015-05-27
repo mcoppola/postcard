@@ -5,7 +5,11 @@ function Stamp(raster, id, postcard, e) {
     self.id = id;
 	self.raster = raster;
 	self.raster.onMouseDown = onMouseMouseDown;
-	self.raster.scale(0.5);
+	// self.raster.scale(0.25);
+
+    self.raster.bounds.width = 130;
+    self.raster.bounds.height = 130;
+
     self.raster.ctx = postcard;
 
     self.raster.position = new Point(e.event.x, e.event.y);
