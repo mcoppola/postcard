@@ -23,11 +23,16 @@ function Stamp(raster, id, postcard, e) {
 var onMouseMouseDown = function(e) {
 	var self = this;
 
+    if (self.state.dead) { return; }
+
 	if (self.state.scale) {
         self.state.scale = false;
 
         // put in the postcard group, under the border
         self.ctx.postcardGroup.insertChild(self.ctx.postcardGroup.children.length - 4, self);
+
+        // stamp
+        self.state.dead = true;
 
     } else if (self.state.move) {
 

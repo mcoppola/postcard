@@ -82,3 +82,12 @@ Postcard.prototype.newStamp = function(id, e) {
 	self.stamps.push(stamp);
 	return stamp;
 };
+Postcard.prototype.clear = function() {
+	var self = this;
+
+	for (var i = self.stamps.length - 1; i >= 0; i--) {
+		self.stamps[i].raster.remove();
+	};
+
+	self.stamps = [];
+}
