@@ -6,8 +6,11 @@ function Mold(raster, id, postcard) {
 	self.raster.ctx = postcard;
 	self.raster.moldId = id;
 
-	self.raster.bounds.width = 50;
-    self.raster.bounds.height = 50;
+	self.width = 30;
+	self.height = 30;
+
+	self.raster.bounds.width = self.width;
+    self.raster.bounds.height = self.height;
 
 }
 

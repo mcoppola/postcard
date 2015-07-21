@@ -23,46 +23,28 @@ Postcard.prototype.run = function() {
 
 	tool.onMouseMove = function(e) {
 
-        for (var i = self.stamps.length - 1; i >= 0; i--) {
-
-
-            if (self.stamps[i].raster.state.move) {
-                self.stamps[i].raster.position = new Point(e.event.x, e.event.y);
-            }
-            if (self.stamps[i].raster.state.scale) {
-
-                var x = e.event.x;
-
-                // scale
-                self.stamps[i].raster.bounds.width = Math.max(self.stamps[i].raster.state.oWidth/8,  self.stamps[i].raster.state.oWidth + Math.round(100 * ((x - self.stamps[i].raster.state.xD)/100)));
-                self.stamps[i].raster.bounds.height = Math.max(self.stamps[i].raster.state.oHeight/8, self.stamps[i].raster.state.oHeight + Math.round(100 * ((x - self.stamps[i].raster.state.xD)/100)));
-
-                // rotate
-                // console.log(items[i].raster.rotation);
-                // self.stamps[i].raster.rotate(((e.event.y - self.stamps[i].raster.state.yD)/5000)*360);
-
-            }
-
-        }
-
+        self.stampsOnMouseMove(e);
     };
 
-    // view.onFrame = function(e) {
+    view.onFrame = function(e) {
 
-    // }
+    	self.stampsOnFrame(e);
+    };
 };
 
 Postcard.prototype.drawBorder = function() {
-	var self = this;
+	var self = this,
+		borderColor = "#fff";
+
 
 	var top = new Shape.Rectangle(new Point(0,0), new Size(view.bounds.width, (view.bounds.height - self.height)/2));
-	top.fillColor = '#fcfaff';
+	top.fillColor = borderColor;
 	var btm = new Shape.Rectangle(new Point(0, view.bounds.height - ((view.bounds.height - self.height)/2)), new Size(view.bounds.width, view.bounds.height - self.height/2));
-	btm.fillColor = '#fcfaff';
+	btm.fillColor = borderColor;
 	var left = new Shape.Rectangle(new Point(0,0), new Size(view.bounds.width/2 - self.width/2, view.bounds.height));
-	left.fillColor = '#fcfaff';
+	left.fillColor = borderColor;
 	var right = new Shape.Rectangle(new Point(view.bounds.width/2 + self.width/2,0), new Size(view.bounds.width/2 - self.width/2, view.bounds.height));
-	right.fillColor = '#fcfaff';
+	right.fillColor = borderColor;
 
 	self.postcardGroup = new Group([top, btm, left, right]);
 
@@ -75,6 +57,7 @@ Postcard.prototype.newMold = function(id) {
 	self.molds[id] = mold;
 	return mold;
 };
+
 Postcard.prototype.newStamp = function(id, e) {
 	var self = this;
 
@@ -82,12 +65,29 @@ Postcard.prototype.newStamp = function(id, e) {
 	self.stamps.push(stamp);
 	return stamp;
 };
+
 Postcard.prototype.clear = function() {
 	var self = this;
 
 	for (var i = self.stamps.length - 1; i >= 0; i--) {
 		self.stamps[i].raster.remove();
-	};
+	}
 
 	self.stamps = [];
+};
+
+Postcard.prototype.stampsOnFrame = function(e) {
+	var self = this;
+
+	for (var i = self.stamps.length - 1; i >= 0; i--) {
+		self.stamps[i].onFrame(e);
+	}
+}
+
+Postcard.prototype.stampsOnMouseMove = function(e) {
+	var self = this;
+
+	for (var i = self.stamps.length - 1; i >= 0; i--) {
+        self.stamps[i].onMouseMove(e);
+    }
 }

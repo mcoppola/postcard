@@ -1,44 +1,38 @@
 paper.install(window);
 
 window.onload = function() {
-
-$(function(){
-    var postcard = new Postcard();
-
-
-    var ss1 = postcard.newMold('ss1'),
-        ss2  = postcard.newMold('ss2'),
-        ss3 = postcard.newMold('ss3'),
-        stamp1  = postcard.newMold('stamp1'),
-        stamp2  = postcard.newMold('stamp2'),
-        stamp3  = postcard.newMold('stamp3');
+    $(function(){
+        var postcard = new Postcard();
 
 
-    ss2.raster.position = new Point(100, 100);
-    ss1.raster.position = new Point(100, 200);
-    ss3.raster.position = new Point(100, 300);
+        var ss1 = postcard.newMold('ss1'),
+            ss2 = postcard.newMold('ss2'),
+            ss3 = postcard.newMold('ss3'),
+            stamp1  = postcard.newMold('stamp1'),
+            stamp2  = postcard.newMold('stamp2'),
+            stamp3  = postcard.newMold('stamp3');
 
-    stamp1.raster.position = new Point(100, 400);
-    stamp2.raster.position = new Point(100, 500);
-    stamp3.raster.position = new Point(100, 600);
+
+        var yBase = ((view.bounds.height - postcard.height)/2 + (ss1.height/2));
+        // xBase = ((view.bounds.width - postcard.width)/2 - (ss1.width)*4);
 
 
-    var $clear = $('.clear');
+        ss1.raster.position = new Point(300, yBase);
+        ss2.raster.position = new Point(300, yBase + 40*2);
+        ss3.raster.position = new Point(300, yBase + 40*4);
 
-    $clear.click(function(){
+        stamp1.raster.position = new Point(365, yBase);
+        stamp2.raster.position = new Point(365, yBase + 40*2);
+        stamp3.raster.position = new Point(365, yBase + 40*4);
 
-        postcard.clear();
+
+        var $clear = $('.clear');
+
+        $clear.click(function(){
+            postcard.clear();
+        });
+
+
+
     });
-
-
-// }
-
-
-
-
-
-
-});
-
-
 }
