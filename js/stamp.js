@@ -92,10 +92,10 @@ Stamp.prototype.onMouseUp = function(e) {
         self.raster.state.scale = false;
 
         // kill it
-        self.state.dead = true;
+        self.raster.state.dead = true;
 
         // put in the postcard group, under the border
-        self.ctx.postcardGroup.insertChild(self.ctx.postcardGroup.children.length - 4, self);
+        self.raster.ctx.postcardGroup.insertChild(self.raster.ctx.postcardGroup.children.length - 4, self.raster);
     }
 };
 
