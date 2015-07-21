@@ -9,14 +9,15 @@ function Stamp(raster, id, postcard, e) {
 
     self.startWidth = 30;
     self.startHeight = 30;
-    self.endWidth = 120;
-    self.endHeight = 120;
+    self.endWidth = 100;
+    self.endHeight = 100;
     self.growSpeed = 25;    // px per frame
 
     self.raster.bounds.width = self.startWidth;
     self.raster.bounds.height = self.startWidth;
 
     self.raster.ctx = postcard;
+    self.raster.ctx.state.stamping = true;
 
     self.raster.position = new Point(e.event.x, e.event.y);
 
@@ -75,6 +76,8 @@ Stamp.prototype.onMouseMove = function(e) {
         self.raster.bounds.width = Math.max(self.raster.state.oWidth/8,  self.raster.state.oWidth + Math.round(100 * ((x - self.raster.state.xD)/100)));
         self.raster.bounds.height = Math.max(self.raster.state.oHeight/8, self.raster.state.oHeight + Math.round(100 * ((x - self.raster.state.xD)/100)));
 
+        self.raster.position = new Point(self.raster.state.xD, self.raster.state.yD);
+
         // rotate
         // console.log(self.stamps[i].raster.rotation);
         // console.log('y:', y);
@@ -91,8 +94,11 @@ Stamp.prototype.onMouseUp = function(e) {
         // turn off scaling
         self.raster.state.scale = false;
 
+        // turn off stamping
+        self.raster.ctx.state.stamping = false;
+
         // kill it
-        self.raster.state.dead = true;
+        self.stampAndDestroy();
 
         // put in the postcard group, under the border
         self.raster.ctx.postcardGroup.insertChild(self.raster.ctx.postcardGroup.children.length - 4, self.raster);
@@ -113,4 +119,11 @@ Stamp.prototype.onFrame = function(e) {
             self.raster.position = new Point(self.raster.position.x - (self.growSpeed/2), self.raster.position.y - (self.growSpeed/2));
         }
     }
-}
+};
+
+Stamp.prototype.stampAndDestroy = function() {
+    var self = this;
+
+    self.raster.state.dead = true;
+    // self.raster.ctx.stamps.pop();
+};
