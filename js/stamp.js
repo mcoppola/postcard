@@ -9,9 +9,9 @@ function Stamp(raster, id, postcard, e) {
 
     self.startWidth = 30;
     self.startHeight = 30;
-    self.endWidth = 150;
-    self.endHeight = 150;
-    self.growSpeed = 15;    // px per frame
+    self.endWidth = 120;
+    self.endHeight = 120;
+    self.growSpeed = 25;    // px per frame
 
     self.raster.bounds.width = self.startWidth;
     self.raster.bounds.height = self.startWidth;
@@ -38,17 +38,6 @@ var onMouseMouseDown = function(e) {
     if (self.state.dead) { return; }
 
 
-	// if (self.state.scale) {
- //        self.state.scale = false;
-
- //        // put in the postcard group, under the border
- //        self.ctx.postcardGroup.insertChild(self.ctx.postcardGroup.children.length - 4, self);
-
- //        // stamp
- //        self.state.dead = true;
-
- //    } else 
-
     if (self.state.move) {
 
 		// save the mouse position
@@ -60,13 +49,9 @@ var onMouseMouseDown = function(e) {
         self.state.oHeight = self.bounds.height;
 
         // set the new state to scaling
-
-        // self.state.scale = true;
-        self.state.dead = true;
-        self.ctx.postcardGroup.insertChild(self.ctx.postcardGroup.children.length - 4, self);
-
-
-
+        // - ends in onMouseUp
+        self.state.scale = true;
+        
         self.state.move = false;
 
     } else {
@@ -79,7 +64,6 @@ Stamp.prototype.onMouseMove = function(e) {
     var self = this;
 
     if (self.raster.state.move) {
-        console.log('in move');
         self.raster.position = new Point(e.event.x, e.event.y);
     }
     if (self.raster.state.scale) {
@@ -98,7 +82,22 @@ Stamp.prototype.onMouseMove = function(e) {
         // self.stamps[i].raster.rotation = ((self.stamps[i].raster.state.yD - y)/10);
 
     }
-}
+};
+
+Stamp.prototype.onMouseUp = function(e) {
+    var self = this;
+
+    if (self.raster.state.scale) {
+        // turn off scaling
+        self.raster.state.scale = false;
+
+        // kill it
+        self.state.dead = true;
+
+        // put in the postcard group, under the border
+        self.ctx.postcardGroup.insertChild(self.ctx.postcardGroup.children.length - 4, self);
+    }
+};
 
 Stamp.prototype.onFrame = function(e) {
     var self = this;
