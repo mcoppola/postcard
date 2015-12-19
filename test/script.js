@@ -1,36 +1,87 @@
-paper.install(window);
 
 window.onload = function() {
     $(function(){
-        var postcard = new Postcard();
+
+        var stamps = {
+                a: $('#ss1')[0],
+                b: $('#ss2')[0],
+                c: $('#ss3')[0],
+                d: $('#stamp1')[0],
+                e: $('#stamp2')[0],
+                f: $('#stamp3')[0],
+            },
+            $input  = $('#textInput');
+            s       = '',
+            elms    = [];
+
+        var c = document.getElementById("canvas");
+        var ctx = c.getContext("2d");
 
 
-        var ss1 = postcard.newMold('ss1'),
-            ss2 = postcard.newMold('ss2'),
-            ss3 = postcard.newMold('ss3'),
-            stamp1  = postcard.newMold('stamp1'),
-            stamp2  = postcard.newMold('stamp2'),
-            stamp3  = postcard.newMold('stamp3');
+        var frames = new Bacon.Bus();
+
+        function raf() {
+          requestAnimationFrame(raf);
+          frames.push();
+        }
+        raf();
+
+        var inputKeyUp = $input.asEventStream('keyup');
 
 
-        var yBase = ((view.bounds.height - postcard.height)/2 + (ss1.height/2));
-        // xBase = ((view.bounds.width - postcard.width)/2 - (ss1.width)*4);
+
+        function appendString(e) {
+            s = $input.val();
+            elms = s.split(' ');
+        };
+
+        inputKeyUp.onValue(appendString);
 
 
-        ss1.raster.position = new Point(300, yBase);
-        ss2.raster.position = new Point(300, yBase + 40*2);
-        ss3.raster.position = new Point(300, yBase + 40*4);
-
-        stamp1.raster.position = new Point(365, yBase);
-        stamp2.raster.position = new Point(365, yBase + 40*2);
-        stamp3.raster.position = new Point(365, yBase + 40*4);
-
-
-        var $clear = $('.clear');
-
-        $clear.click(function(){
-            postcard.clear();
+        frames.onValue( function() {
+            redrawCanvas(elms);
         });
+
+        function redrawCanvas(elms) {
+            ctx.clearRect(0,0,c.width,c.height);
+
+            for (var i = 0; i < elms.length; i++) {
+                
+                if (elms[i].length) {
+
+                    var img = stamps[elms[i].charAt(0)] || stamps['a'];
+
+                    var x,y,xS,yS;
+
+                    if (elms[i].charAt(1)) {
+                        x = elms[i].charCodeAt(1) / 2;
+                    } else {
+                        x = 0;
+                    }
+
+                    if (elms[i].charAt(2)) {
+                       y = elms[i].charCodeAt(2) / 10;
+                    } else {
+                       y = 0;
+                    }
+
+                    if (elms[i].charAt(3)) {
+                       xS = elms[i].charCodeAt(3) / 10;
+                    } else {
+                       xS = 1;
+                    }
+
+                    if (elms[i].charAt(4)) {
+                       yS = elms[i].charCodeAt(4) / 10;
+                    } else {
+                       yS = 1;
+                    }
+
+                    ctx.drawImage(img,x,y, 20 * xS, 20 * yS);
+                }
+            };
+        }
+
 
     });
 };

@@ -6,8 +6,14 @@ body
 canvas 
 {
 	position: absolute;
-	width: 100vw;
-	height: 100vh;
+	top: calc(50vh - 167px);
+	left: calc(50vw - 250px);
+
+	margin:  0 auto;
+
+	width: 500px;
+	height: 330px;
+
 }	
 img 
 {
@@ -70,4 +76,19 @@ img
 	color: red;
 	border: 1px solid red;
 
+}
+.text-input-outer
+{
+	width: 100%;
+}
+
+#textInput 
+{
+	position: absolute;
+	bottom: 20vh;
+
+	left: calc(50% - 150px);
+	width: 300px;
+
+	margin: 0 auto;
 }
