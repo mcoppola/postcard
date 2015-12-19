@@ -32,7 +32,5 @@ window.onload = function() {
             postcard.clear();
         });
 
-
-
     });
-}
+};

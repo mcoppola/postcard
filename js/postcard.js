@@ -7,8 +7,11 @@ Postcard = function() {
 
     // Paper layer groups
     self.moldGroup;
-    self.sceneGroup;
     self.selectionGroup;
+    self.backgroundGroup;
+    self.postcardGroup;
+
+    self.sceneGroup;
 
 	self.width = 500;
 	self.height = 330;
@@ -18,6 +21,7 @@ Postcard = function() {
     };
 
 	self.run();
+
 };
 
 Postcard.prototype.run = function() {
@@ -27,53 +31,46 @@ Postcard.prototype.run = function() {
 	var tool = new Tool();
 
 
-    self.drawBorder();
+    self.drawBackground();
 
     tool.onMouseDown = function(e) {
-
         self.drawScene();
     };
-
 	tool.onMouseMove = function(e) {
-
         self.stampsEvent('onMouseMove', e);
     };
-
     tool.onMouseUp = function(e) {
-
-    	self.stampsEvent('onMouseUp', e);
+   	    self.stampsEvent('onMouseUp', e);
         self.drawScene();
     };
-
     view.onFrame = function(e) {
-
     	self.stampsEvent('onFrame', e);
     };
 };
 
-Postcard.prototype.drawBorder = function() {
+Postcard.prototype.drawBackground = function() {
 	var self = this,
-		borderColor = self.state.stamping ?  "#dfdfdf" : "#fff";
+		bgColor = self.state.stamping ?  "#dfdfdf" : "#fff";
 
 	var top = new Shape.Rectangle(new Point(0,0), new Size(view.bounds.width, (view.bounds.height - self.height)/2));
-	top.fillColor = borderColor;
+	top.fillColor = bgColor;
 	var btm = new Shape.Rectangle(new Point(0, view.bounds.height - ((view.bounds.height - self.height)/2)), new Size(view.bounds.width, view.bounds.height - self.height/2));
-	btm.fillColor = borderColor;
+	btm.fillColor = bgColor;
 	var left = new Shape.Rectangle(new Point(0,0), new Size(view.bounds.width/2 - self.width/2, view.bounds.height));
-	left.fillColor = borderColor;
+	left.fillColor = bgColor;
 	var right = new Shape.Rectangle(new Point(view.bounds.width/2 + self.width/2,0), new Size(view.bounds.width/2 - self.width/2, view.bounds.height));
-	right.fillColor = borderColor;
+	right.fillColor = bgColor;
 
-    self.postcardGroup = new Group([top, btm, left, right]);
+    self.backgroundGroup = new Group([top, btm, left, right]);
 
 };
 
 Postcard.prototype.drawScene = function() {
     var self = this;
 
-    self.drawBorder();
-    self.sceneGroup = new Group([self.postcardGroup, self.moldGroup, self.selectionGroup]);
-}
+    self.drawBackground();
+    self.sceneGroup = new Group([self.backgroundGroup, self.moldGroup, self.selectionGroup]);
+};
 
 Postcard.prototype.newMold = function(id) {
 	var self = this;
@@ -83,7 +80,6 @@ Postcard.prototype.newMold = function(id) {
     self.moldRasters.push(mold.raster);
 
     self.moldGroup = new Group(self.moldRasters);
-    self.sceneGroup = new Group([self.postcardGroup, self.moldGroup]);
 
 	return mold;
 };
@@ -107,7 +103,10 @@ Postcard.prototype.clear = function() {
 		self.stamps[i].raster.remove();
 	}
 
-    self.stampGroup = null;
+    self.postcardGroup.remove();
+    self.postcardGroup = undefined;
+	self.drawScene();
+
 	self.stamps = [];
 };
 
