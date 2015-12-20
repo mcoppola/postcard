@@ -59,7 +59,7 @@ window.onload = function() {
 
             for (var i = 0; i < elms.length; i++) {
 
-                ctx.globalCompositeOperation = blendModes[Math.min(elms[i].length, blendModes.length - 1)];
+                ctx.globalCompositeOperation = blendModes[Math.min(elms[i].length - 1, blendModes.length - 1)];
 
                 if (elms[i].length) {
 
