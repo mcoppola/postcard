@@ -63,7 +63,7 @@ window.onload = function() {
 
                 if (elms[i].length) {
 
-                    var img = stamps[elms[i].charAt(0)] || stamps['j'];
+                    var img = stamps[elms[i].charAt(0).toLowerCase()] || stamps['j'];
 
                     var x,y,xS,yS;
 

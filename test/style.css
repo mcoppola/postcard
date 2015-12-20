@@ -110,7 +110,8 @@ img
 #textInput 
 {
 	position: absolute;
-	bottom: 20vh;
+	/*bottom: 20vh;*/
+	top: calc(50vh + 167px + 40px);
 
 	left: calc(50% - 150px);
 	width: 300px;
