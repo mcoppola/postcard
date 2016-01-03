@@ -2,25 +2,76 @@
 window.onload = function() {
     $(function(){
 
+        var buzz = function(x,y,xS,yS) {
+                        var pos = {};
+
+                        pos.x = Math.random()*2 + x;
+                        pos.y = Math.random()*2 + y;
+
+                        pos.xS = xS;
+                        pos.yS = yS;
+
+                        return pos;
+                    }
+
         var stamps = {
-                a: $('#ss1')[0],
-                b: $('#ss2')[0],
-                c: $('#ss3')[0],
-                d: $('#ss4')[0],
-                e: $('#ss5')[0],
-                f: $('#screen1')[0],
-                g: $('#screen2')[0],
-                h: $('#screen3')[0],
-                i: $('#screen4')[0],
-                j: $('#grad1')[0],
-                k: $('#stamp1')[0],
-                l: $('#stamp2')[0],
-                m: $('#stamp3')[0],
-                n: $('#ss6')[0],
-                o: $('#ss7')[0],
-                p: $('#ss8')[0],
-                q: $('#ss9')[0],
-                r: $('#ss10')[0]
+                a: {
+                    img: $('#ss1')[0]
+                },
+                b: {
+                    img: $('#ss2')[0]
+                },
+                c: {
+                    img: $('#ss3')[0]
+                },
+                d: {
+                    img: $('#ss4')[0]
+                    // animate: buzz
+                },
+                e: {
+                    img: $('#ss5')[0]
+                    // animate: buzz
+                },
+                f: {
+                    img: $('#screen1')[0]
+                },
+                g: {
+                    img: $('#screen2')[0]
+                },
+                h: {
+                    img: $('#screen3')[0]
+                },
+                i: {
+                    img: $('#screen4')[0]
+                },
+                j: {
+                    img: $('#grad1')[0]
+                },
+                k: {
+                    img: $('#stamp1')[0]
+                },
+                l: {
+                    img: $('#stamp2')[0]
+                },
+                m: {
+                    img: $('#stamp3')[0]
+                },
+                n: {
+                    img: $('#ss6')[0]
+                },
+                o: {
+                    img: $('#ss7')[0]
+                },
+                p: {
+                    img: $('#ss8')[0]
+                },
+                q: {
+                    img: $('#ss9')[0]
+                },
+                r: {
+                    img: $('#ss10')[0]
+                }
+   
             },
             $input  = $('#textInput');
             s       = '',
@@ -50,9 +101,7 @@ window.onload = function() {
         inputKeyUp.onValue(appendString);
 
 
-        frames.onValue( function() {
-            redrawCanvas(elms);
-        });
+        
 
         function redrawCanvas(elms) {
             ctx.clearRect(0,0,c.width,c.height);
@@ -63,7 +112,7 @@ window.onload = function() {
 
                 if (elms[i].length) {
 
-                    var img = stamps[elms[i].charAt(0).toLowerCase()] || stamps['j'];
+                    var img = stamps[elms[i].charAt(0).toLowerCase()] ? stamps[elms[i].charAt(0).toLowerCase()].img : stamps['j'].img;
 
                     var x,y,xS,yS;
 
@@ -91,11 +140,35 @@ window.onload = function() {
                        yS = xS;
                     }
 
-                    ctx.drawImage(img, x,y, 50 * xS, 50 * yS);
+                    if (stamps[elms[i].charAt(0).toLowerCase()] && typeof(stamps[elms[i].charAt(0).toLowerCase()].animate) === 'function') {
+                        var pos = stamps[elms[i].charAt(0).toLowerCase()].animate(x,y,xS,yS);
+                        ctx.drawImage(img, pos.x, pos.y, 50 * pos.xS, 50 * pos.yS);
+
+                    } else {
+                        ctx.drawImage(img, x,y, 50 * xS, 50 * yS);
+                    }
+
                 }
 
             };
-        }
+        } 
+ 
+
+
+
+        $input.focus();
+
+        $input.typed({
+            strings: ["Meet me in my field of grass..", "you don't make me sor___ry.", "I'll be home and then I'll waste ", "All my time on you dear.", "asdf good funny." ],
+            typeSpeed: 70,
+            onNewChar: function() {
+                $input.keyup();
+            }
+        });
+
+        frames.onValue( function() {
+            redrawCanvas(elms);
+        });
 
 
     });

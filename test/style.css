@@ -22,7 +22,7 @@ canvas
 	-webkit-transform: scale3d(1,1,1);
 	-webkit-transition: transform .2s ease;
 }	
-canvas:hover 
+/*canvas:hover 
 {
 	cursor: pointer;
 
@@ -35,7 +35,7 @@ canvas:hover + .block-through .border
 canvas:hover + .block-through + .text-input-outer
 {
 	opacity: 0;
-}
+}*/
 img 
 {
 	display: none;
@@ -149,4 +149,12 @@ img
 	border: 2px solid #999;
 	background-color: rgba(255,255,255,0.9);
 	/*border: none;*/
+}
+
+.mr-play
+{
+	position: absolute;
+	bottom: 50px;
+	text-align: center;
+	width: 100%;
 }
